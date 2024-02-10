@@ -1,5 +1,3 @@
-// import DisqusComments from "@/components/DisqusComment";
-
 const getSingleTech = async ({ id }) => {
   try {
     const res = await fetch(`http://localhost:3000/api/alltech/${id}`, {
@@ -24,7 +22,6 @@ const SingleCategoryPost = async ({ params }) => {
       <p className="mt-1">Category: {category}</p>
       <p className="my-1">{description}</p>
       <p>Likes: {likes}</p>
-      {/* <DisqusComments tech={tech} /> */}
     </div>
   );
 };

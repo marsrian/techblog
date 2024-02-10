@@ -23,10 +23,10 @@ const AllTechPost = ({ tech }) => {
         <div className="md:w-[400px]">
           <Image className="overflow-hidden" src={photoTitle} width={250} height={150} alt={name} />
         </div>
-        <div>
+        <div className="relative">
           <h1 className="text-lg font-bold">{name}</h1>
           <p className="my-1">{description.slice(0, 100)}...</p>
-          <div className="flex justify-between items-center mt-8">
+          <div className="flex justify-between items-center mt-8 absolute left-0 right-0 bottom-0">
             <p className="bg-blue-400 px-3 rounded-full text-white font-medium">
               {category}
             </p>

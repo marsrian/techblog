@@ -3,10 +3,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { signIn } from "next-auth/react";
 
-const LoginPage = () => {
-  const [info, setInfo] = useState({ email: "", password: "" });
+const RegisterPage = () => {
+  const [info, setInfo] = useState({ username: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
   const router = useRouter();
@@ -17,35 +16,57 @@ const LoginPage = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!info.email || !info.password) {
+    if ((!info.username, !info.email || !info.password)) {
       setError("Please fill in all fields");
     }
-    console.log(info);
     try {
       setPending(true);
-      const res = await signIn("credentials", {
-        email: info.email,
-        password: info.password,
-        redirect: false,
+      const res = await fetch("api/register", {
+        method: "POST",
+        headers: {
+          "Content-ype": "application/json",
+        },
+        body: JSON.stringify(info),
       });
-      if (res.error) {
-        setError("Invalid credentials");
+
+      if (res.ok) {
         setPending(false);
-        return;
+        const form = e.target;
+        form.reset();
+        setError();
+        router.push("/login");
+      } else {
+        const errorData = await res.json();
+        setError(errorData.message);
+        setPending(false);
       }
-      router.replace("/");
     } catch (error) {
       setPending(false);
       setError("Something went wrong.");
     }
   }
   console.log(info);
+
   return (
     <div>
-      <h3 className="text-xl font-medium text-gray-800 text-center mt-5">
-        Login Form
-      </h3>
       <form onSubmit={handleSubmit}>
+        <h3 className="text-xl font-bold my-5 text-center">Register</h3>
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="username"
+          >
+            Username
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id=""
+            name="username"
+            type="text"
+            placeholder="Username"
+            onChange={(e) => handleInput(e)}
+          />
+        </div>
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
@@ -83,17 +104,17 @@ const LoginPage = () => {
           className="text-xl font-bold text-white bg-green-500 rounded px-4 py-2 cursor-pointer hover:bg-green-400"
           disabled={pending ? true : false}
           type="submit"
-          value={pending ? "Loading..." : "Login"}
+          value={pending ? "Registering" : "Register"}
         />
       </form>
-      <p className="text-center mt-4">
-        Do&apos;nt have an account?{" "}
-        <Link href="/register" className="text-blue-500 font-medium">
-          Sign Up
+      <p className="mt-4 text-center">
+        Already have an account?{" "}
+        <Link href="/login" className="text-blue-500 font-medium">
+          Login
         </Link>
       </p>
     </div>
   );
 };
 
-export default LoginPage;
+export default RegisterPage;
