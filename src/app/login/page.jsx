@@ -20,7 +20,6 @@ const LoginPage = () => {
     if (!info.email || !info.password) {
       setError("Please fill in all fields");
     }
-    console.log(info);
     try {
       setPending(true);
       const res = await signIn("credentials", {

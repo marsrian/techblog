@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 async function login(credentials) {
   try {
     dbConnect();
-    const user = await User.findOne({ email: credentials.email });
+    const user = await User.findOne({ email: credentials.email});
     if (!user) {
       throw new Error("wrong credentials");
     }
@@ -23,12 +23,12 @@ async function login(credentials) {
 }
 
 export const authOptions = {
-  pages: {
-    signIn: "/login",
-  },
+  // pages: {
+  //   signIn: "/login",
+  // },
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: "credentials",
       credentials: {},
       async authorize(credentials) {
         try {
@@ -40,26 +40,33 @@ export const authOptions = {
       },
     }),
   ],
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        (token.username = user.username),
-          (token.email = user.email),
-          (token.id = user.id);
-      }
-      console.log("this the token = ", token);
-      return token;
-    },
-    async session({ session, token }) {
-      if (token) {
-        session.user.username = token.username,
-          (session.user.email = token.email),
-          (session.user.id = token.id);
-      }
-      console.log("this the session = ", session);
-      return session;
-    },
+  session: {
+    strategy: "jwt",
   },
+  secret: process.env.NEXTAUTH_SECRET,
+  pages: {
+    signIn: "/login",
+  },
+  // callbacks: {
+  //   async jwt({ token, user }) {
+  //     if (user) {
+  //       (token.username = user.username),
+  //         (token.email = user.email),
+  //         (token.id = user.id);
+  //     }
+  //     console.log("this the token = ", token);
+  //     return token;
+  //   },
+  //   async session({ session, token }) {
+  //     if (token) {
+  //       (session.user.username = token.username),
+  //         (session.user.email = token.email),
+  //         (session.user.id = token.id);
+  //     }
+  //     console.log("this the session = ", session);
+  //     return session;
+  //   },
+  // },
 };
 
 const handler = nextAuth(authOptions);
