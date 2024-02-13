@@ -1,5 +1,4 @@
 "use client";
-
 import { Press_Start_2P } from "next/font/google";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
