@@ -11,6 +11,10 @@ const CategoryLayout = async ({ children }) => {
       path: "/categories?category=Freelancing",
     },
     {
+      name: "Google",
+      path: "/categories?category=Google",
+    },
+    {
       name: "Trickbd Notice",
       path: "/categories?category=Trickbd Notice",
     },

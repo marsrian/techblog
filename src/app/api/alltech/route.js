@@ -35,3 +35,16 @@ export async function GET() {
   const allTechs = await AllTech.find();
   return NextResponse.json({ allTechs });
 }
+
+// ChatGPT Code:
+// export async function GET(req) {
+//   await dbConnect();
+
+//   const { page = 1 } = req.query;
+//   const itemsPerPage = 5;
+
+//   const skip = (page - 1) * itemsPerPage;
+//   const allTechs = await AllTech.find().skip(skip).limit(itemsPerPage);
+
+//   return NextResponse.json({ allTechs });
+// }

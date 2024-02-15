@@ -1,5 +1,6 @@
 import Link from "next/link";
 import AllTechPost from "./AllTechPost";
+import PaginationControls from "./PaginationControls";
 
 const getAllTechs = async () => {
   try {
@@ -15,8 +16,16 @@ const getAllTechs = async () => {
   }
 };
 
-const RecentPost = async () => {
+const RecentPost = async ({ searchParams }) => {
+  const page = searchParams["page"] ?? "1";
+  const per_page = searchParams["per_page"] ?? "3";
+
+  const start = (Number(page) - 1) * Number(per_page);
+  const end = start + Number(per_page);
+
   const { allTechs } = await getAllTechs();
+
+  const allData = allTechs.slice(start, end);
 
   const categoryList = [
     {
@@ -26,6 +35,10 @@ const RecentPost = async () => {
     {
       name: "Freelancing",
       path: "/categories?category=Freelancing",
+    },
+    {
+      name: "Google",
+      path: "/categories?category=Google",
     },
     {
       name: "Trickbd Notice",
@@ -48,9 +61,13 @@ const RecentPost = async () => {
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
         <div className="col-span-1 md:col-span-4 flex flex-col gap-2">
-            {allTechs.map((tech) => (
-              <AllTechPost tech={tech} key={tech.id} />
-            ))}
+          {allData.map((tech) => (
+            <AllTechPost tech={tech} key={tech.id} />
+          ))}
+          <PaginationControls
+            hasNextPage={end < allTechs.length}
+            hasPrevPage={start > 0}
+          />
         </div>
         <div className="col-span-1 border rounded-md bg-white">
           <h1 className="text-xl font-bold p-2 border-b">Category:</h1>

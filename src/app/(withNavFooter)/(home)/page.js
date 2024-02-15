@@ -1,14 +1,12 @@
 import Featured from "@/components/Featured";
 import RecentPost from "@/components/RecentPost";
-import Link from "next/link";
 
-const Home = () => {
-  
+const Home = ({ searchParams }) => {
   return (
     <div className="">
       <Featured />
-      <RecentPost />
+      <RecentPost searchParams={searchParams} />
     </div>
   );
-}
+};
 export default Home;
